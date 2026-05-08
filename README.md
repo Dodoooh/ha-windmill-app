@@ -5,7 +5,7 @@ This repository contains a Home Assistant add-on that deploys
 workflow engine for scripts, flows and apps — directly inside your Home
 Assistant Operating System installation.
 
-[![Open your Home Assistant instance and show the add-on store with this repository.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fyour-username%2Fha-windmill-addon)
+[![Open your Home Assistant instance and show the add-on store with this repository.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2FDodoooh%2Fha-windmill-app)
 
 ## Add-ons in this repository
 

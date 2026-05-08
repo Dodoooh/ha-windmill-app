@@ -1,4 +1,4 @@
 # https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
 name: Windmill Home Assistant Add-on
-url: "https://github.com/your-username/ha-windmill-addon"
-maintainer: "Your Name <you@example.com>"
+url: "https://github.com/Dodoooh/ha-windmill-app"
+maintainer: "Dodoooh <claudio@mail.tuwa.ch>"

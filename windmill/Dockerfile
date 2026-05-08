@@ -42,5 +42,5 @@ LABEL \
     io.hass.arch="aarch64|amd64" \
     org.opencontainers.image.title="Home Assistant Add-on: Windmill" \
     org.opencontainers.image.description="Self-hosted Windmill (server + worker + bundled PostgreSQL) for Home Assistant" \
-    org.opencontainers.image.source="https://github.com/your-username/ha-windmill-addon" \
+    org.opencontainers.image.source="https://github.com/Dodoooh/ha-windmill-app" \
     org.opencontainers.image.licenses="Apache-2.0"
