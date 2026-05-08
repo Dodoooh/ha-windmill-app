@@ -4,7 +4,7 @@
 # `windmill` binary together with all the language runtimes (Deno, Bun,
 # Python, Go) the workers need at runtime, so we only have to add a bundled
 # PostgreSQL plus a small launcher.
-ARG BUILD_FROM=ghcr.io/windmill-labs/windmill:1.602.0
+ARG BUILD_FROM=ghcr.io/windmill-labs/windmill:1.699.0
 FROM ${BUILD_FROM}
 
 ENV DEBIAN_FRONTEND=noninteractive \
