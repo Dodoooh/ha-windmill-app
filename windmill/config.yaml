@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-configuration
 name: Windmill
-version: "0.1.0"
+version: "0.2.0"
 slug: windmill
 description: >-
   Self-hosted Windmill — open-source developer platform and workflow engine
@@ -36,7 +36,7 @@ schema:
   disable_telemetry: "bool"
   enterprise_license_key: "password?"
   external_database_url: "str?"
-# Comment out the next line for upstream releases that publish prebuilt
-# images. While developing locally, leave it commented so the supervisor
-# builds the image from the Dockerfile in this directory.
-# image: "ghcr.io/dodoooh/{arch}-addon-windmill"
+# Prebuilt multi-arch image published by .github/workflows/builder.yaml.
+# Comment this line out to make the HA supervisor build the image
+# locally from the Dockerfile in this directory instead.
+image: "ghcr.io/dodoooh/addon-windmill"

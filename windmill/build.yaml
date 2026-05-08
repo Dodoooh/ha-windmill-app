@@ -1,0 +1,14 @@
+# https://developers.home-assistant.io/docs/add-ons/configuration#add-on-build-file
+#
+# Tells the HA builder which BUILD_FROM to inject for each architecture.
+# The Windmill image is itself multi-arch, so we use the same tag for both
+# slots.
+build_from:
+  aarch64: ghcr.io/windmill-labs/windmill:1.699.0
+  amd64: ghcr.io/windmill-labs/windmill:1.699.0
+labels:
+  org.opencontainers.image.title: "Home Assistant Add-on: Windmill"
+  org.opencontainers.image.description: "Self-hosted Windmill (server + worker + bundled PostgreSQL) for Home Assistant"
+  org.opencontainers.image.source: "https://github.com/Dodoooh/ha-windmill-app"
+  org.opencontainers.image.licenses: "Apache-2.0"
+args: {}

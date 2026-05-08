@@ -1,5 +1,13 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 0.2.0
+
+- Switch to prebuilt multi-arch images from
+  `ghcr.io/dodoooh/addon-windmill`. Home Assistant now pulls the image
+  instead of building it locally — first install drops from minutes to
+  seconds.
+- Added GitHub Actions builder workflow.
+
 ## 0.1.0
 
 - Initial release.
