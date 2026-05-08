@@ -1,5 +1,21 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 0.3.0
+
+- Home Assistant integration is now opt-in via the new
+  `expose_homeassistant_token` config option (default: off). When on, the
+  add-on re-exports the Supervisor-issued token as `HOMEASSISTANT_TOKEN`
+  + `HOMEASSISTANT_URL` and adds them to `WHITELIST_ENVS` so Windmill
+  Python/Deno/Bun sandboxes can read them. When off, `SUPERVISOR_TOKEN`
+  is actively unset before Windmill starts so no job — including bash —
+  can pick it up.
+- `homeassistant_api: true` is set in the manifest so HA grants the
+  add-on API access; whether jobs actually see the token is controlled
+  by the user via the option above.
+- Add four integration recipes plus a security trade-off note to DOCS.md
+  (call HA service, read state, trigger Windmill from HA, subscribe to
+  HA events via WebSocket trigger).
+
 ## 0.2.2
 
 - Drop `startup`, `boot`, `hassio_role`, `host_network` from `config.yaml`

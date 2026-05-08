@@ -84,6 +84,116 @@ the connection string must own the target database (or have the
 [self-hosting docs](https://www.windmill.dev/docs/advanced/self_host) for
 the SQL bootstrap script Windmill expects.
 
+## Talking to Home Assistant
+
+The add-on can hand its Supervisor token to Windmill jobs so scripts and
+flows can call the Home Assistant REST API without the user having to
+create and paste a long-lived token. **This is opt-in and disabled by
+default** — set `expose_homeassistant_token: true` in the add-on
+configuration to enable it.
+
+When enabled, the launcher exports two environment variables and adds
+them to `WHITELIST_ENVS` so Python / Deno / Bun / Go sandboxes can read
+them:
+
+| Variable | Value |
+|---|---|
+| `HOMEASSISTANT_URL` | `http://supervisor/core` |
+| `HOMEASSISTANT_TOKEN` | Per-add-on token managed by the Supervisor |
+
+When disabled (default) the launcher actively unsets `SUPERVISOR_TOKEN`
+before starting Windmill, so no script — not even a bash one — can read
+it. If you want HA access in this mode, generate a long-lived token in
+HA (*Profile → Long-lived access tokens*), store it as a Windmill
+*Variable* (marked secret) or *Resource*, and reference it from your
+scripts.
+
+### Security trade-off
+
+The opt-in token is short-lived (rotates on every add-on restart) and
+never touches disk, but **anyone who can run a Windmill job inherits
+full HA-REST-API access**. Only enable this if you are the sole admin of
+both Windmill and Home Assistant, or if every Windmill workspace user is
+trusted with HA-admin-equivalent rights.
+
+### Recipe 1 — Call an HA service from Windmill (Python)
+
+```python
+import os, requests
+
+def main(entity_id: str = "light.living_room"):
+    url = os.environ["HOMEASSISTANT_URL"]
+    token = os.environ["HOMEASSISTANT_TOKEN"]
+    r = requests.post(
+        f"{url}/api/services/light/toggle",
+        headers={"Authorization": f"Bearer {token}"},
+        json={"entity_id": entity_id},
+        timeout=10,
+    )
+    r.raise_for_status()
+    return r.json()
+```
+
+### Recipe 2 — Read HA state from Windmill (TypeScript / Deno)
+
+```ts
+export async function main(entity: string = "sensor.outside_temperature") {
+  const url = Deno.env.get("HOMEASSISTANT_URL")!;
+  const token = Deno.env.get("HOMEASSISTANT_TOKEN")!;
+  const res = await fetch(`${url}/api/states/${entity}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(`HA returned ${res.status}`);
+  return await res.json();
+}
+```
+
+### Recipe 3 — Trigger a Windmill flow from a Home Assistant automation
+
+In Windmill, open your script or flow and copy its **webhook URL** from
+the *Triggers → Webhooks* tab (something like
+`http://<addon-host>:8000/api/w/admins/jobs/run/p/u/admin/my_flow`). Then
+in HA's `configuration.yaml`:
+
+```yaml
+rest_command:
+  run_windmill_flow:
+    url: "http://a0d7b954-windmill:8000/api/w/admins/jobs/run/p/u/admin/my_flow"
+    method: POST
+    headers:
+      Authorization: "Bearer !secret windmill_token"
+    content_type: "application/json"
+    payload: '{"some_arg": "{{ trigger.payload }}"}'
+```
+
+`a0d7b954-windmill` is the internal hostname HA assigns to this add-on
+on the `hassio` Docker network (you can also use `homeassistant.local:8000`
+from outside). The Windmill token comes from *Account → Tokens* in the
+Windmill UI — store it as a HA secret.
+
+Use the `rest_command` from any automation:
+
+```yaml
+automation:
+  - alias: "Run Windmill flow at 7am"
+    trigger:
+      platform: time
+      at: "07:00:00"
+    action:
+      service: rest_command.run_windmill_flow
+      data:
+        some_arg: "good morning"
+```
+
+### Recipe 4 — Subscribe to HA events from Windmill (advanced)
+
+Windmill has a built-in WebSocket trigger. Point it at
+`ws://supervisor/core/api/websocket`, send the standard HA auth handshake
+(`{"type":"auth","access_token":"<HOMEASSISTANT_TOKEN>"}`) followed by
+`{"id":1,"type":"subscribe_events","event_type":"state_changed"}`, and
+your flow will be invoked once per HA event. This replaces a Node-RED
+`events: state` node — without the always-on flow runtime.
+
 ## Data and persistence
 
 | Path                   | Purpose                                      |

@@ -16,6 +16,14 @@ configuration:
   disable_telemetry:
     name: Telemetrie deaktivieren
     description: Wenn aktiv, sendet Windmill keine anonyme Nutzungstelemetrie.
+  expose_homeassistant_token:
+    name: Home-Assistant-Token an Windmill-Jobs durchreichen
+    description: >-
+      Standardmäßig aus. Wenn an, gibt das Add-on das Supervisor-Token als
+      HOMEASSISTANT_TOKEN an Windmill-Skripte weiter, sodass sie HA's
+      REST-API ohne Langzeit-Token aufrufen können. Wer Jobs ausführen darf,
+      hat dann vollen HA-Admin-Zugriff — nur aktivieren, wenn beide Seiten
+      vom selben Personenkreis administriert werden.
   enterprise_license_key:
     name: Enterprise-Lizenzschlüssel
     description: Optionaler Windmill-Enterprise-Lizenzschlüssel. Für die Open-Source-Version leer lassen.

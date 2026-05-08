@@ -16,6 +16,14 @@ configuration:
   disable_telemetry:
     name: Disable telemetry
     description: When enabled, Windmill does not send anonymous usage telemetry.
+  expose_homeassistant_token:
+    name: Expose Home Assistant token to Windmill jobs
+    description: >-
+      Off by default. When on, the add-on's Supervisor token is exposed as
+      HOMEASSISTANT_TOKEN inside Windmill scripts so they can call HA's REST
+      API without setting up a long-lived token. Anyone able to run jobs
+      will then have full HA-admin access — only enable in single-trust
+      setups.
   enterprise_license_key:
     name: Enterprise license key
     description: Optional Windmill Enterprise Edition license key. Leave empty for the open-source build.

@@ -45,6 +45,7 @@ BASE_URL="$(read_opt base_url "")"
 NUM_WORKERS="$(read_opt num_workers "1")"
 LOG_LEVEL="$(read_opt log_level "info")"
 DISABLE_TELEMETRY="$(read_opt disable_telemetry "true")"
+EXPOSE_HOMEASSISTANT_TOKEN="$(read_opt expose_homeassistant_token "false")"
 ENTERPRISE_LICENSE_KEY="$(read_opt enterprise_license_key "")"
 EXTERNAL_DATABASE_URL="$(read_opt external_database_url "")"
 
@@ -136,6 +137,23 @@ if [[ "${DISABLE_TELEMETRY}" == "true" ]]; then
 fi
 if [[ -n "${ENTERPRISE_LICENSE_KEY}" ]]; then
     export LICENSE_KEY="${ENTERPRISE_LICENSE_KEY}"
+fi
+
+# ---------------------------------------------------------------------------
+# Home Assistant integration. The Supervisor injects SUPERVISOR_TOKEN
+# whenever `homeassistant_api: true` is set in config.yaml. We only
+# re-export it under HOMEASSISTANT_* and add it to WHITELIST_ENVS when the
+# user explicitly opts in via `expose_homeassistant_token: true`. When the
+# user keeps the default (false) we actively unset SUPERVISOR_TOKEN so no
+# Windmill-spawned process — including bash jobs — can pick it up.
+# ---------------------------------------------------------------------------
+if [[ "${EXPOSE_HOMEASSISTANT_TOKEN}" == "true" && -n "${SUPERVISOR_TOKEN:-}" ]]; then
+    log "Exposing Home Assistant token to Windmill jobs (opt-in)"
+    export HOMEASSISTANT_URL="http://supervisor/core"
+    export HOMEASSISTANT_TOKEN="${SUPERVISOR_TOKEN}"
+    export WHITELIST_ENVS="${WHITELIST_ENVS:+${WHITELIST_ENVS},}HOMEASSISTANT_URL,HOMEASSISTANT_TOKEN,SUPERVISOR_TOKEN"
+else
+    unset SUPERVISOR_TOKEN HOMEASSISTANT_URL HOMEASSISTANT_TOKEN
 fi
 
 # ---------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-configuration
 name: Windmill
-version: "0.2.2"
+version: "0.3.0"
 slug: windmill
 description: >-
   Self-hosted Windmill — open-source developer platform and workflow engine
@@ -10,6 +10,11 @@ arch:
   - aarch64
   - amd64
 init: false
+# Allow the Supervisor to inject SUPERVISOR_TOKEN. The token is only
+# re-exported to Windmill jobs when the user opts in via
+# `expose_homeassistant_token: true` below; otherwise rootfs/run.sh
+# unsets it so no Windmill-spawned process can read it.
+homeassistant_api: true
 ports:
   8000/tcp: 8000
 ports_description:
@@ -23,6 +28,7 @@ options:
   num_workers: 1
   log_level: info
   disable_telemetry: true
+  expose_homeassistant_token: false
   enterprise_license_key: ""
   external_database_url: ""
 schema:
@@ -30,6 +36,7 @@ schema:
   num_workers: "int(1,8)"
   log_level: "list(debug|info|warn|error)"
   disable_telemetry: "bool"
+  expose_homeassistant_token: "bool"
   enterprise_license_key: "password?"
   external_database_url: "str?"
 # Prebuilt multi-arch image published by .github/workflows/builder.yaml.
