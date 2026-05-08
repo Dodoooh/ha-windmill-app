@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-configuration
 name: Windmill
-version: "0.2.0"
+version: "0.2.1"
 slug: windmill
 description: >-
   Self-hosted Windmill — open-source developer platform and workflow engine

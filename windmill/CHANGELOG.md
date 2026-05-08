@@ -1,5 +1,10 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 0.2.1
+
+- CI: cancel superseded builder/lint runs on the same branch.
+- No add-on functional changes (image content identical to 0.2.0).
+
 ## 0.2.0
 
 - Switch to prebuilt multi-arch images from
