@@ -1,0 +1,42 @@
+# https://developers.home-assistant.io/docs/add-ons/configuration#add-on-configuration
+name: Windmill
+version: "0.1.0"
+slug: windmill
+description: >-
+  Self-hosted Windmill — open-source developer platform and workflow engine
+  for scripts, flows and low-code apps. Bundled with PostgreSQL.
+url: "https://github.com/your-username/ha-windmill-addon/tree/main/windmill"
+arch:
+  - aarch64
+  - amd64
+startup: application
+boot: auto
+init: false
+hassio_role: default
+host_network: false
+ports:
+  8000/tcp: 8000
+ports_description:
+  8000/tcp: Windmill web UI and API
+webui: "http://[HOST]:[PORT:8000]/"
+map:
+  - share:rw
+  - addon_config:rw
+options:
+  base_url: ""
+  num_workers: 1
+  log_level: info
+  disable_telemetry: true
+  enterprise_license_key: ""
+  external_database_url: ""
+schema:
+  base_url: "url?"
+  num_workers: "int(1,8)"
+  log_level: "list(debug|info|warn|error)"
+  disable_telemetry: "bool"
+  enterprise_license_key: "password?"
+  external_database_url: "str?"
+# Comment out the next line for upstream releases that publish prebuilt
+# images. While developing locally, leave it commented so the supervisor
+# builds the image from the Dockerfile in this directory.
+# image: "ghcr.io/your-username/{arch}-addon-windmill"

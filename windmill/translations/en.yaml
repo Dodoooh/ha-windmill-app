@@ -1,0 +1,28 @@
+configuration:
+  base_url:
+    name: Public base URL
+    description: >-
+      Public URL Windmill is reachable under (e.g. https://windmill.example.com).
+      Leave empty when accessing the add-on directly via http://homeassistant.local:8000/.
+  num_workers:
+    name: Number of workers
+    description: >-
+      How many Windmill worker processes to run inside the add-on. Each worker
+      can execute one job at a time. 1 is enough for light use, increase only
+      if your hardware can handle the load.
+  log_level:
+    name: Log level
+    description: Verbosity of the Windmill log output (debug | info | warn | error).
+  disable_telemetry:
+    name: Disable telemetry
+    description: When enabled, Windmill does not send anonymous usage telemetry.
+  enterprise_license_key:
+    name: Enterprise license key
+    description: Optional Windmill Enterprise Edition license key. Leave empty for the open-source build.
+  external_database_url:
+    name: External database URL
+    description: >-
+      Optional. PostgreSQL connection string (postgres://user:pass@host:5432/windmill).
+      When set, the bundled PostgreSQL is not started.
+network:
+  8000/tcp: Windmill web UI and API
