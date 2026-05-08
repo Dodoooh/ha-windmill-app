@@ -17,6 +17,12 @@ on:
 permissions:
   contents: read
 
+# Cancel an in-flight build on the same ref when a new push lands. Saves
+# minutes when several commits are pushed back-to-back.
+concurrency:
+  group: builder-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   init:
     name: Initialize builds
