@@ -1,5 +1,12 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 0.2.2
+
+- Drop `startup`, `boot`, `hassio_role`, `host_network` from `config.yaml`
+  and `args: {}` from `build.yaml` — all of them just restated defaults
+  that the add-on linter rejects.
+- No add-on functional changes.
+
 ## 0.2.1
 
 - CI: cancel superseded builder/lint runs on the same branch.

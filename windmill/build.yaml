@@ -11,4 +11,3 @@ labels:
   org.opencontainers.image.description: "Self-hosted Windmill (server + worker + bundled PostgreSQL) for Home Assistant"
   org.opencontainers.image.source: "https://github.com/Dodoooh/ha-windmill-app"
   org.opencontainers.image.licenses: "Apache-2.0"
-args: {}
